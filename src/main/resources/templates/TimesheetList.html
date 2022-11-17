@@ -1,0 +1,71 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Timesheet Management</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div class="container">
+		<div th:include="navigation"></div>
+		<div class="card">
+			<div class="card-header text-primary text-center">
+				<h1>Timesheet Management</h1>
+				<p class="text-left"><a th:href=@{/timesheet/add} class="btn btn-primary">Add
+						Timesheet</a></p>
+			</div>
+
+			<div class="card-body">
+				<table class="table table-bordered table-hover" id="dataTable">
+					<thead>
+						<tr class="bg bg-secondary text-white">
+							<th>Id</th>
+							<th>Employee</th>
+							<th>Start Time</th>
+							<th>End Time</th>
+							<th>Hours Worked</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="t:${page.getContent()}">
+							<td th:text="${t[0]}"></td>
+							<td th:text="${t[1]}"></td>
+							<td th:text="${#dates.format(t[2],'dd-MMM-yyyy h:mm a')}"></td>
+							<td th:text="${#dates.format(t[3], 'dd-MMM-yyyy h:mm a')}"></td>
+							<td class="text-center" th:text="${tutils.getTimeDiff(t[2], t[3])}"></td>
+							<td><a th:href="@{/timesheet/edit(id=${t[0]})}" class="btn btn-info">Edit</a>
+								&nbsp; <a th:href="@{/timesheet/delete(id=${t[0]})}"
+									class="btn btn-danger">Delete</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="card-footer" th:if="${message}">
+				<strong><i>[[${message}]]</i></strong>
+			</div>
+		</div>
+		<div th:if="${page.getTotalPages()>0}">
+			<ul class="pagination">
+				<li class="page-item" th:if="${!page.isFirst()}"><a class="page-link"
+						th:href="@{/timesheet/all(page=1)}">First</a>
+				</li>
+				<li class="page-item" th:if="${page.hasPrevious()}"><a class="page-link"
+						th:href="@{/timesheet/all(page=${page.getNumber()})}">Previous</a>
+				</li>
+				<th:block th:each="i: ${#numbers.sequence(1,page.getTotalPages())}">
+					<li class="page-item" th:classappend="${page.getNumber()+1 == i?'active':''}">
+						<a class="page-link" th:href="@{/timesheet/all(page=${i})}">[[${i}]]</a></li>
+				</th:block>
+				<li class="page-item" th:if="${page.hasNext()}"><a class="page-link"
+						th:href="@{/timesheet/all(page=${page.getNumber()+2})}">Next</a>
+				</li>
+				<li class="page-item" th:if="${!page.isLast()}"><a class="page-link"
+						th:href="@{/timesheet/all(page=${page.getTotalPages()})}">Last</a>
+				</li>
+			</ul>
+		</div>
+
+</body>
+
+</html>

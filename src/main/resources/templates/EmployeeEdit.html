@@ -1,0 +1,52 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Employee Management</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container p-3 my-3 border">
+<h1>Employee Management</h1>
+<hr>
+<h3>Add Employee</h3>
+	<form th:action="@{/employee/update}" method="post" th:object="${employee}">
+	<input type="hidden" th:field="*{empId}" />
+  <div class="form-group">
+    <label for="empName">Name:</label>
+    <input type="text" class="form-control" placeholder="Enter Name" th:field="*{empName}" id="empName" />
+  </div>
+  <div class="form-group">
+    <label for="email">Email address:</label>
+    <input type="email" class="form-control" placeholder="Enter email" th:field="*{empEmail}" id="empEmail" />
+  </div>
+  <div class="form-group">
+    <label for="phone">Phone:</label>
+    <input type="text" class="form-control" placeholder="Enter Phone" th:field="*{empPhone}" id="empPhone" />
+  </div>
+  <div class="form-group">
+    <label for="empGender">Gender:</label><br/>
+    <input type="radio" th:field="*{empGender}" value="female" id="empGender"> Female <br/>
+    <input type="radio" th:field="*{empGender}" value="male" id="empGender"> Male
+  </div>
+  <div class="form-group">
+    <label for="empJoinDate">Joining Date:</label>
+    <input type="date" class="form-control" placeholder="Enter mm-dd-yyyy" th:field="*{empJoinDate}" id="empJoinDate" />
+  </div>
+  <div class="form-group">
+    <label for="empDept">Department:</label>
+    <select class="form-control" id="empDept" th:field="*{empDept}">
+    	<option value="">Select Department</option>
+    	<option th:each="dept:${depts}" th:value="${dept.deptId}" th:text="${dept.deptName} + ' (' + ${dept.deptCode} + ')'" />
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="empHobbies">Hobbies:</label><br/>
+    <span th:each="hobby:${hobbies}">
+    		<input type="checkbox" th:field="*{empHobbies}" th:value="${hobby}" />
+    		<label for="empHobbies">[[${hobby}]]</label> <br/>
+    </span>
+  </div>
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>
+</div>
+</body>
+</html>

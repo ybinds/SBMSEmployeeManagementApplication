@@ -1,0 +1,89 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Employee Management</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div class="container">
+		<div th:include="navigation"></div>
+
+		<div class="card">
+			<div class="card-header text-primary text-center">
+				<h1>Employee Management</h1>
+				<p class="text-success text-left"><a th:href=@{/employee/register} class="btn btn-primary">Add
+						Employee</a>
+				</p>
+			</div>
+			<div class="card-body">
+				<table class="table table-bordered table-hover">
+					<tr class="bg bg-secondary text-white">
+						<th><a
+								th:href="@{/employee/all(deptId=${deptId},page=${page.getNumber()+1},sort=empId +','+${revdirection})}">Id</a>
+						</th>
+						<th><a
+								th:href="@{/employee/all(deptId=${deptId},page=${page.getNumber()+1},sort=empName +','+${revdirection})}">Name</a>
+						</th>
+						<th><a
+								th:href="@{/employee/all(deptId=${deptId},page=${page.getNumber()+1},sort=empEmail +','+${revdirection})}">Email</a>
+						</th>
+						<th>Department</th>
+						<th>Hobbies</th>
+						<th><a
+								th:href="@{/employee/all(page=${page.getNumber()+1},sort=empJoinDate +','+${revdirection})}">Start
+								date</a></th>
+						<th>Actions</th>
+					</tr>
+					<tbody>
+						<tr th:each="employee:${page.getContent()}">
+							<td th:text="${employee.empId}"></td>
+							<td th:text="${employee.empName}"></td>
+							<td th:text="${employee.empEmail}"></td>
+							<td><a
+									th:href="@{/employee/all(deptId=${employee.empDept.deptId},page=${page.getNumber()+1},sort=empId +','+${direction})}">[[${employee.empDept.deptName}]]
+									([[${employee.empDept.deptCode}]])</a></td>
+							<td>[[${{employee.empHobbies}}]]</td>
+							<td>[[${#dates.format(employee.empJoinDate, 'dd-MMM-yyyy')}]]</td>
+							<td><a th:href="@{/employee/edit(id=${employee.empId})}" class="btn btn-info">Edit</a>
+								&nbsp; <a th:href="@{/employee/delete(id=${employee.empId})}"
+									class="btn btn-danger">Delete</a></td>
+						</tr>
+						<tr th:if="${page.getContent().isEmpty()}" class="text-danger text-center">
+							<td colspan="7">
+								There are no Employees in this Department
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="card-footer" th:if="${message}">
+				<b><i>[[${message}]]</i></b>
+			</div>
+		</div>
+		<div th:if="${page.getTotalPages()>0}">
+			<ul class="pagination">
+				<li class="page-item" th:if="${!page.isFirst()}"><a class="page-link"
+						th:href="@{/employee/all(deptId=${deptId},page=1,sort=${property} +','+${direction})}">First</a>
+				</li>
+				<li class="page-item" th:if="${page.hasPrevious()}"><a class="page-link"
+						th:href="@{/employee/all(deptId=${deptId},page=${page.getNumber()},sort=${property} +','+${direction})}">Previous</a>
+				</li>
+				<th:block th:each="i: ${#numbers.sequence(1,page.getTotalPages())}">
+					<li class="page-item" th:classappend="${page.getNumber()+1 == i?'active':''}">
+						<a class="page-link" th:href="@{/employee/all(deptId=${deptId},page=${i},sort=${property} +','+${direction})}">[[${i}]]</a></li>
+				</th:block>
+				<li class="page-item" th:if="${page.hasNext()}"><a class="page-link"
+						th:href="@{/employee/all(deptId=${deptId},page=${page.getNumber()+2},sort=${property} +','+${direction})}">Next</a>
+				</li>
+				<li class="page-item" th:if="${!page.isLast()}"><a class="page-link"
+						th:href="@{/employee/all(deptId=${deptId},page=${page.getTotalPages()},sort=${property} +','+${direction})}">Last</a>
+				</li>
+				<li class="page-item" th:if="${deptId>0}"><a class="page-link" th:href="@{/employee/all}">All</a></li>
+			</ul>
+		</div>
+	</div>
+
+</body>
+
+</html>
