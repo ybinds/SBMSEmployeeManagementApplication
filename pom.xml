@@ -54,7 +54,7 @@
 	</dependencies>
 
 	<build>
-		<filename>sbms-em-app</filename>
+		<finalName>sbms-em-app</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
