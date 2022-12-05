@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: Y3llapragad@
-    url: jdbc:mysql://localhost:3306/sbms_proj
+    password: root
+    url: jdbc:mysql://mysqldb:3306/sbms_proj
     username: root
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
