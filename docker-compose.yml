@@ -1,0 +1,23 @@
+version: "1"
+services:
+  application:
+    image: sbms-em-app
+    networks:
+        - springboot-db-net
+    ports:
+      - "8080:8080"
+    depends_on: 
+      - mysqldb
+  mysqldb:
+    image: mysql:8.0.29
+    networks:
+      - springboot-db-net
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=sbms_proj
+    volumes:
+      - app_data:/var/lib/mysql
+networks:
+  springboot-db-net:
+volumes:
+  app_data:
